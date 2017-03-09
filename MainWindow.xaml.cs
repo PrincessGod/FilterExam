@@ -279,8 +279,11 @@ namespace WpfApplication1
         public List<V> Keys;
         private Func<T, V> value;
 
+        public bool isOtherSelected { get; set; }
+
         public FiltersKeysAny(Func<T, V> f)
         {
+            isOtherSelected = false;
             Keys = new List<V>();
             value = f;
         }
@@ -294,27 +297,19 @@ namespace WpfApplication1
         {
             foreach (var VARIABLE in Keys)
             {
-                var c = new FilterBase<T,V>(value, VARIABLE);
+                var c = new FilterBase<T, V>(value, VARIABLE);
                 if (c.Match(l))
                     return true;
+            }
+            if (isOtherSelected)
+            {
+                return true;
             }
             return false;
         }
     }
 
-    class Customer
-    {
-        public string ID { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string Region { get; set; }
-        public int Sales { get; set; }
 
-        public override string ToString()//重写ToString(),默认的ToString()仅输出类型名称
-        {
-            return "ID:" + ID + "City:" + City + "Country:" + Country + "Region:" + Region + "Sales:" + Sales + "\r\n";
-        }
-    }
 
     public class CommonEqualityComparer<T, V> : IEqualityComparer<T>
     {
@@ -344,5 +339,17 @@ namespace WpfApplication1
         }
     }
 
+    class Customer
+    {
+        public string ID { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string Region { get; set; }
+        public int Sales { get; set; }
 
+        public override string ToString()//重写ToString(),默认的ToString()仅输出类型名称
+        {
+            return "ID:" + ID + "City:" + City + "Country:" + Country + "Region:" + Region + "Sales:" + Sales + "\r\n";
+        }
+    }
 }
